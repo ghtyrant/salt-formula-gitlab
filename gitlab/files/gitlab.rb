@@ -384,15 +384,23 @@ gitlab_rails['redis_port'] = 6379
 ###! Docs: https://docs.gitlab.com/omnibus/settings/smtp.html
 ###! **Use smtp instead of sendmail/postfix.**
 
-gitlab_rails['smtp_enable'] = true
+gitlab_rails['smtp_enable'] = {{ server.mail.get('enabled', 'false') }}
+
+{% if server.mail.get('enabled', 'false')|lower == 'true' %}
 gitlab_rails['smtp_address'] = "{{ server.mail.host }}"
 gitlab_rails['smtp_port'] = {{ server.mail.port }}
 gitlab_rails['smtp_user_name'] = "{{ server.mail.user }}"
 gitlab_rails['smtp_password'] = "{{ server.mail.password }}"
 gitlab_rails['smtp_domain'] = "{{ server.mail.get('domain', '') }}"
+{% if server.mail.get('authentication', False) %}
 gitlab_rails['smtp_authentication'] = "login"
-# gitlab_rails['smtp_enable_starttls_auto'] = true
-gitlab_rails['smtp_tls'] = {{ server.mail.use_tls|lower }}
+gitlab_rails['smtp_user_name'] = "{{ server.mail.get('user', '') }}"
+gitlab_rails['smtp_password'] = "{{ server.mail.get('password', '') }}"
+{% endif %}
+
+gitlab_rails['smtp_enable_starttls_auto'] = {{ server.mail.get('use_starttls', 'false') }}
+gitlab_rails['smtp_tls'] = {{ server.mail.get('use_tls', 'false')|lower }}
+{% endif %}
 
 ###! **Can be: 'none', 'peer', 'client_once', 'fail_if_no_peer_cert'**
 ###! Docs: http://api.rubyonrails.org/classes/ActionMailer/Base.html
