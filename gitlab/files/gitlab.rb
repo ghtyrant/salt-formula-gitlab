@@ -386,19 +386,19 @@ gitlab_rails['redis_port'] = 6379
 
 gitlab_rails['smtp_enable'] = {{ server.mail.get('enabled', 'false') }}
 
-{% if server.mail.get('enabled', 'false')|lower == 'true' %}
+{% if server.mail.get('enabled', 'false')|lower == 'true' -%}
 gitlab_rails['smtp_address'] = "{{ server.mail.get('host', '127.0.0.1') }}"
 gitlab_rails['smtp_port'] = {{ server.mail.port }}
 gitlab_rails['smtp_domain'] = "{{ server.mail.get('domain', '') }}"
-{% if server.mail.get('authentication', False) %}
+{% if server.mail.get('authentication', False) -%}
 gitlab_rails['smtp_authentication'] = "login"
 gitlab_rails['smtp_user_name'] = "{{ server.mail.get('user', '') }}"
 gitlab_rails['smtp_password'] = "{{ server.mail.get('password', '') }}"
-{% endif %}
+{%- endif -%}
 
 gitlab_rails['smtp_enable_starttls_auto'] = {{ server.mail.get('use_starttls', 'false') }}
 gitlab_rails['smtp_tls'] = {{ server.mail.get('use_tls', 'false')|lower }}
-{% endif %}
+{%- endif %}
 
 ###! **Can be: 'none', 'peer', 'client_once', 'fail_if_no_peer_cert'**
 ###! Docs: http://api.rubyonrails.org/classes/ActionMailer/Base.html
