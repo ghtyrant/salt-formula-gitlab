@@ -387,10 +387,8 @@ gitlab_rails['redis_port'] = 6379
 gitlab_rails['smtp_enable'] = {{ server.mail.get('enabled', 'false') }}
 
 {% if server.mail.get('enabled', 'false')|lower == 'true' %}
-gitlab_rails['smtp_address'] = "{{ server.mail.host }}"
+gitlab_rails['smtp_address'] = "{{ server.mail.get('host', '127.0.0.1') }}"
 gitlab_rails['smtp_port'] = {{ server.mail.port }}
-gitlab_rails['smtp_user_name'] = "{{ server.mail.user }}"
-gitlab_rails['smtp_password'] = "{{ server.mail.password }}"
 gitlab_rails['smtp_domain'] = "{{ server.mail.get('domain', '') }}"
 {% if server.mail.get('authentication', False) %}
 gitlab_rails['smtp_authentication'] = "login"
